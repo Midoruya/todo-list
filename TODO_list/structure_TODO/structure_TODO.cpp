@@ -7,7 +7,6 @@ structure_TODO::structure_TODO(std::string new_name, std::string new_description
 	const auto date_time_now = std::chrono::system_clock::now();
 	this->name = new_name;
 	this->description = new_description;
-	this->create_date = "10.10.2022 10:00";
 	this->categories = new_categories;
 	this->is_complete = false;
 }
