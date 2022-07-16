@@ -1,14 +1,15 @@
-// TODO_list.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <string>
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <fstream>  
 #include <Windows.h>
 #include "structure_TODO/structure_TODO.h"
 #include <map>
 
-std::vector<std::string> split(std::string strToSplit, char delimeter)
+std::vector<std::string> split(std::string strToSplit, char delimeter = ' ')
 {
 	std::stringstream ss(strToSplit);
 	std::string item;
@@ -26,12 +27,35 @@ int main()
 {
 	while (true)
 	{
+		int i(0);
+		WIN32_FIND_DATA wfd;
+		HANDLE hFind = FindFirstFile("C:/Users/Midoruya/Desktop/todo-list/x64/Release/*.task", &wfd);
+		if (INVALID_HANDLE_VALUE != hFind)
+		{
+			do
+			{
+				std::ifstream fin(&wfd.cFileName[0]);
+				if (!fin.is_open()) printf("file %s will not open", &wfd.cFileName[0]);
+				int file_name_size = strlen(&wfd.cFileName[0]);
+				std::string file_data = "";
+				std::getline(fin, file_data);
+				for (int i = 0; i < file_name_size; i++) {
+					if (i > file_name_size - 6)
+						wfd.cFileName[i] = NULL;
+				}
+				auto file_info = split(&wfd.cFileName[i]);
+				task_list.insert({ file_info[0], structure_TODO(file_info[0],file_data,file_info[1],file_info[2] == "no" ? false : true) });
+				fin.close();
+			} while (NULL != FindNextFile(hFind, &wfd));
+			FindClose(hFind);
+		}
+
 		printf("all task\n");
 		std::string input_comman = "";
 		printf("Command list :\nadd : add new task to the list\nupdate {name_todo} : update description for current task\ndelete {name_todo} : delete all info about current task\n");
 		printf("Please inter you command: \n");
 		getline(std::cin, input_comman);
-		std::vector<std::string> divided_commands_on_atoms = split(input_comman, ' ');
+		std::vector<std::string> divided_commands_on_atoms = split(input_comman);
 		std::string header_query = divided_commands_on_atoms[0];
 		int header_query_size = divided_commands_on_atoms.size();
 		if (header_query == "add") 
@@ -52,7 +76,13 @@ int main()
 				std::string description = divided_commands_on_atoms[2];
 				std::string tag = divided_commands_on_atoms[3];
 				structure_TODO new_todo = structure_TODO(name, description, tag);
-				task_list.insert({ name,new_todo });
+
+				char construct_file_name[0x248];
+				sprintf(construct_file_name, "%s %s no.task", name.c_str(), tag.c_str());
+				std::ofstream new_file_for_task (construct_file_name);
+				new_file_for_task << description << std::endl;
+				new_file_for_task.close();
+
 				printf("successful crete new task : %s\n", name.c_str());
 			}
 		}
@@ -67,9 +97,12 @@ int main()
 			std::string description = divided_commands_on_atoms[2];
 			auto find_task_by_name = task_list.find(name.c_str());
 			if (find_task_by_name != task_list.end()){
-				find_task_by_name->second.update_this_task(description.c_str(), "");
 				printf("successful update task : %s\nnew description : %s", name.c_str(), description.c_str());
-
+				char construct_file_name[0x248];
+				sprintf(construct_file_name, "%s %s %s.task", name.c_str(), find_task_by_name->second.categories.c_str(), find_task_by_name->second.is_complete ? "yes" : "no");
+				std::ofstream new_file_for_task(construct_file_name, std::ios::out | std::ios::trunc);
+				new_file_for_task << description << std::endl;
+				new_file_for_task.close();
 			}
 			else  printf("task : %s not found\n", name.c_str());
 		}
@@ -84,7 +117,9 @@ int main()
 			auto find_task_by_name = task_list.find(name.c_str());
 			if (find_task_by_name != task_list.end()) 
 			{
-				task_list.erase(find_task_by_name);
+				char construct_file_name[0x248];
+				sprintf(construct_file_name, "%s %s %s.task", name.c_str(), find_task_by_name->second.categories.c_str(), find_task_by_name->second.is_complete ? "yes" : "no");
+				std::remove(construct_file_name);
 				printf("successful delete task : %s\n", name.c_str());
 
 			}
