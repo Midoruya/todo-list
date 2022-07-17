@@ -21,9 +21,18 @@
     <ClCompile Include="structure_TODO\structure_TODO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="coman_handler\command_handle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="structure_TODO\structure_TODO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="coman_handler\command_handle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="other.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

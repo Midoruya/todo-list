@@ -20,9 +20,5 @@ public:
 		this->categories = new_categories;
 		this->is_complete = new_is_complete;
 	}
-
-	void update_this_task(std::string new_description, std::string new_categories);
-
-	void complete_this_task();
 };
 
