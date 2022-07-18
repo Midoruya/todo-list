@@ -11,4 +11,5 @@ select * ==> show all task
 select where {parametr} = {value} ==> show only task which have it value
 update {name} {new_description} ==> update description for it
 done {name} ==> finishig task by name
+select query has arguments for seach (name, description and status ) comparison only == value
 ```
