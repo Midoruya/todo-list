@@ -4,6 +4,8 @@
 #include "../other.h"
 #include <fstream>
 #include <Windows.h>
+#include <stdio.h> 
+#include <direct.h>
 
 void command_handle::handle_new_command()
 {
@@ -14,9 +16,13 @@ void command_handle::handle_new_command()
 
 void command_handle::search_all_task()
 {
+	char current_work_dir[0x255];
+	_getcwd(current_work_dir, sizeof(current_work_dir));
+	std::string path_programm =  std::string(current_work_dir);
+	path_programm.append("\\*.task");
 	int i(0);
 	WIN32_FIND_DATA wfd;
-	HANDLE hFind = FindFirstFile("C:/Users/Midoruya/Desktop/todo-list/x64/Release/*.task", &wfd);
+	HANDLE hFind = FindFirstFile(path_programm.c_str(), &wfd);
 	if (INVALID_HANDLE_VALUE != hFind)
 	{
 		do
@@ -81,8 +87,8 @@ void command_handle::handling_command_update()
 		}
 		std::string name = this->command_argument[1];
 		std::string description = this->command_argument[2];
-		auto find_task_by_name = task_list.find(name.c_str());
-		if (find_task_by_name != task_list.end()){
+		auto find_task_by_name = this->task_list.find(name.c_str());
+		if (find_task_by_name != this->task_list.end()){
 			printf("successful update task : %s\nnew description : %s", name.c_str(), description.c_str());
 			char construct_file_name[0x248];
 			sprintf(construct_file_name, "%s %s %s.task", name.c_str(), find_task_by_name->second.categories.c_str(), find_task_by_name->second.is_complete ? "yes" : "no");
@@ -104,8 +110,8 @@ void command_handle::handling_command_delete()
 			return;
 		}
 		std::string name = this->command_argument[1];
-		auto find_task_by_name = task_list.find(name.c_str());
-		if (find_task_by_name != task_list.end())
+		auto find_task_by_name = this->task_list.find(name.c_str());
+		if (find_task_by_name != this->task_list.end())
 		{
 			char construct_file_name[0x248];
 			sprintf(construct_file_name, "%s %s %s.task", name.c_str(), find_task_by_name->second.categories.c_str(), find_task_by_name->second.is_complete ? "yes" : "no");
@@ -124,13 +130,18 @@ void command_handle::handling_command_select()
 		std::string second_parametr = this->command_argument[1];
 		if (second_parametr == "*")
 		{
-			for (auto var : task_list)
+			for (auto& var : this->task_list)
 			{
 				printf("task : %s | %s | %s\n", var.second.name.c_str(), var.second.description.c_str(), var.second.is_complete ? "yes" : "no");
 			}
 		}
 		else if (second_parametr == "where")
 		{
+			if (this->command_argument.size() <= 4)
+			{
+				printf("incorrect parametrs\n");
+				return;
+			}
 			for (int i = 1; i++; i < this->command_argument.size())
 			{
 				std::string parametr = this->command_argument[i];
@@ -141,8 +152,8 @@ void command_handle::handling_command_select()
 				{
 					if (equal == "==")
 					{
-						auto find_task_by_name = task_list.find(argument.c_str());
-						if (find_task_by_name != task_list.end())
+						auto find_task_by_name = this->task_list.find(argument.c_str());
+						if (find_task_by_name != this->task_list.end())
 						{
 							printf("task : %s | %s | %s\n", find_task_by_name->second.name.c_str(), find_task_by_name->second.description.c_str(), find_task_by_name->second.is_complete ? "yes" : "no");
 						}
@@ -157,7 +168,7 @@ void command_handle::handling_command_select()
 				{
 					if (equal == "==")
 					{
-						for (auto var : task_list)
+						for (auto var : this->task_list)
 						{
 							if (var.second.description == argument)
 								printf("task : %s | %s | %s\n", var.second.name.c_str(), var.second.description.c_str(), var.second.is_complete ? "yes" : "no");
@@ -169,7 +180,7 @@ void command_handle::handling_command_select()
 				{
 					if (equal == "==")
 					{
-						for (auto var : task_list)
+						for (auto var : this->task_list)
 						{
 							bool is_comp = argument == "yes" ? true : false;
 							if (var.second.is_complete == is_comp)
@@ -199,8 +210,8 @@ void command_handle::handling_command_done()
 			return;
 		}
 		std::string name = this->command_argument[1];
-		auto find_task_by_name = task_list.find(name.c_str());
-		if (find_task_by_name != task_list.end()) 
+		auto find_task_by_name = this->task_list.find(name.c_str());
+		if (find_task_by_name != this->task_list.end())
 		{
 			char old_construct_file_name[0x248];
 			char new_construct_file_name[0x248];
