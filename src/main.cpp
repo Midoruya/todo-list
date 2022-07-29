@@ -54,8 +54,9 @@ int main()
         new_table_command.set_table_header(table_header_array);
         new_table_command.set_table_columns(description_commands);
         new_table_command.draw_all_table();
-        std::printf("Please inter you command: \n");
         command_handler handler_command = command_handler();
+        handler_command.search_all_task();
+        std::printf("Please inter you command: \n");
         handler_command.handle_new_command();
         auto test = [](std::string str)
         { std::printf("%s\n", str.c_str()); };
