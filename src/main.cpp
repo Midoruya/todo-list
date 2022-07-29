@@ -2,9 +2,8 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
-#include <sstream>
 #include "command_handler/command_handler.h"
-#include <iomanip>
+#include "console_table/console_table.h"
 
 struct command_description
 {
@@ -13,26 +12,37 @@ struct command_description
     std::string description;
 };
 
-std::vector<command_description> description_commands = {
+std::vector<table_header> table_header_array = {
     {
         "command",
+        22,
+    },
+    {
         "example",
+        60,
+    },
+    {
         "description",
+        60,
+    },
+};
+
+std::vector<std::vector<table_column>> description_commands = {
+
+    {
+        {"add"},
+        {"add {name} {descritpion} {tag}"},
+        {"add new task to the list"},
     },
     {
-        "add",
-        "add {name} {descritpion} {tag}",
-        "add new task to the list",
+        {"update"},
+        {"update {name_todo}"},
+        {"update description for current task"},
     },
     {
-        "update",
-        "update {name_todo}",
-        "update description for current task",
-    },
-    {
-        "delete",
-        "delete {name_todo}",
-        "delete all info about current task",
+        {"delete"},
+        {"delete {name_todo}"},
+        {"delete all info about current task"},
     },
 };
 
@@ -40,34 +50,10 @@ int main()
 {
     while (true)
     {
-        auto print_command_description = [](command_description description)
-        {
-            std::string print = "";
-            std::string table_name = description.name;
-            std::string table_description = description.description;
-            std::string table_body = description.body;
-            int first_column_buffer = 22;
-            int second_column_buffer = 60;
-            int third_column_buffer = 60;
-            std::cout << "|"
-                      << std::string(first_column_buffer / 2 - table_name.size() / 2, ' ')
-                      << table_name
-                      << std::string(first_column_buffer / 2 - table_name.size() / 2, ' ')
-                      << (table_name.size() & 1 ? "" : " ")
-                      << "|"
-                      << std::string(second_column_buffer / 2 - table_description.size() / 2, ' ')
-                      << table_description
-                      << std::string(second_column_buffer / 2 - table_description.size() / 2, ' ')
-                      << (table_description.size() & 1 ? "" : " ")
-                      << "|"
-                      << std::string(third_column_buffer / 2 - table_body.size() / 2, ' ')
-                      << table_body
-                      << std::string(third_column_buffer / 2 - table_body.size() / 2, ' ')
-                      << (table_body.size() & 1 ? "" : " ")
-                      << "|"
-                      << std::endl;
-        };
-        std::for_each(description_commands.begin(), description_commands.end(), print_command_description);
+        console_table new_table_command = console_table();
+        new_table_command.set_table_header(table_header_array);
+        new_table_command.set_table_columns(description_commands);
+        new_table_command.draw_all_table();
         std::printf("Please inter you command: \n");
         command_handler handler_command = command_handler();
         handler_command.handle_new_command();
