@@ -33,7 +33,6 @@ void command_handler::search_all_task()
         std::getline(new_file, task_description);
         task_construct new_task = task_construct(task_name, task_description, task_date, task_tag, is_complete);
         this->task_list.push_back(new_task);
-        std::cout << task_description.c_str() << std::endl;
     }
 }
 

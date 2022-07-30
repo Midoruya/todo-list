@@ -5,13 +5,6 @@
 #include "command_handler/command_handler.h"
 #include "console_table/console_table.h"
 
-struct command_description
-{
-    std::string name;
-    std::string body;
-    std::string description;
-};
-
 std::vector<table_header> table_header_array = {
     {
         "command",

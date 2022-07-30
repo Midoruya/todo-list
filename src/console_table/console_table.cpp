@@ -23,7 +23,6 @@ void console_table::draw_table_header()
             char get_spacing_word = g != 1 ? '-' : ' ';
             if (i == 0)
                 std::printf("|");
-
             std::printf("%s", std::string(calculae_stacing, get_spacing_word).c_str());
             if (g == 1)
                 std::printf("%s", this->header_list[i].header.c_str());
