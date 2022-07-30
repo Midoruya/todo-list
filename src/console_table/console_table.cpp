@@ -24,12 +24,12 @@ void console_table::draw_table_header()
             if (i == 0)
                 std::printf("|");
 
-            std::printf(std::string(calculae_stacing, get_spacing_word).c_str());
+            std::printf("%s", std::string(calculae_stacing, get_spacing_word).c_str());
             if (g == 1)
-                std::printf(this->header_list[i].header.c_str());
+                std::printf("%s", this->header_list[i].header.c_str());
             else
-                std::printf(std::string(this->header_list[i].header.size(), '-').c_str());
-            std::printf(std::string(calculae_stacing, get_spacing_word).c_str());
+                std::printf("%s", std::string(this->header_list[i].header.size(), '-').c_str());
+            std::printf("%s", std::string(calculae_stacing, get_spacing_word).c_str());
             std::printf("|");
         }
         std::printf("\n");
@@ -46,10 +46,10 @@ void console_table::draw_table_columns()
             if (g == 0)
                 std::printf("|");
 
-            std::printf(std::string(calculae_stacing, ' ').c_str());
-            std::printf(this->column_list[i][g].column_data.c_str());
-            std::printf(this->column_list[i][g].column_data.size() & 1 ? "" : " ");
-            std::printf(std::string(calculae_stacing, ' ').c_str());
+            std::printf("%s", std::string(calculae_stacing, ' ').c_str());
+            std::printf("%s", this->column_list[i][g].column_data.c_str());
+            std::printf("%s", this->column_list[i][g].column_data.size() & 1 ? "" : " ");
+            std::printf("%s", std::string(calculae_stacing, ' ').c_str());
             std::printf("|");
         }
         std::printf("\n");
@@ -60,9 +60,9 @@ void console_table::draw_table_columns()
         if (i == 0)
             std::printf("|");
 
-        std::printf(std::string(calculae_stacing, '-').c_str());
-        std::printf(std::string(this->header_list[i].header.size(), '-').c_str());
-        std::printf(std::string(calculae_stacing, '-').c_str());
+        std::printf("%s", std::string(calculae_stacing, '-').c_str());
+        std::printf("%s", std::string(this->header_list[i].header.size(), '-').c_str());
+        std::printf("%s", std::string(calculae_stacing, '-').c_str());
         std::printf("|");
     }
     std::printf("\n");
