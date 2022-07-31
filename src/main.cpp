@@ -8,20 +8,19 @@
 std::vector<table_header> table_header_array = {
     {
         "command",
-        22,
+        15,
     },
     {
         "example",
-        60,
+        40,
     },
     {
         "description",
-        60,
+        40,
     },
 };
 
 std::vector<std::vector<table_column>> description_commands = {
-
     {
         {"add"},
         {"add {name} {descritpion} {tag}"},
