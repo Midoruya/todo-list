@@ -1,5 +1,5 @@
 #include "command_handler.h"
-#include "../utilities.h"
+#include "../utilities/utilities.h"
 #include <iostream>
 #include <filesystem>
 #include <fstream>

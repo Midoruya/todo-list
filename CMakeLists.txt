@@ -8,8 +8,9 @@ enable_testing()
 add_executable(todo_list src/main.cpp)
 add_library(command_handler src/command_handler/command_handler.cpp)
 add_library(console_table src/console_table/console_table.cpp)
+add_library(utilites src/utilities/utilities.cpp)
 
-target_link_libraries(todo_list command_handler console_table)
+target_link_libraries(todo_list command_handler console_table utilites)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
