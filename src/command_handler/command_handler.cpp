@@ -42,18 +42,19 @@ void command_handler::create_new_task(std::string name, std::string tag, std::st
     std::tm *local_time = std::localtime(&get_data_time_now);
     std::string date_time_str = "";
     date_time_str.append(std::to_string(1900 + local_time->tm_year));
-    date_time_str.append(":");
+    date_time_str.append("-");
     date_time_str.append(std::to_string(1 + local_time->tm_mon));
-    date_time_str.append(":");
+    date_time_str.append("-");
     date_time_str.append(std::to_string(local_time->tm_mday));
     std::filesystem::path current_directory = std::filesystem::current_path();
     current_directory.append(current_directory.string() + "/" + this->save_in_folder + "/");
     char new_filename[0x248];
-    std::sprintf(new_filename, "%s %s %s %s%s", name.c_str(), date_time_str.c_str(), tag.c_str(), "no", this->file_format.c_str());
+    sprintf_s(new_filename, "%s %s %s %s%s", name.c_str(), date_time_str.c_str(), tag.c_str(), "no", this->file_format.c_str());
     current_directory.append(new_filename);
+
     std::ofstream new_file(current_directory);
     if (!new_file.is_open())
         std::cout << "[Error] open and write in file" << std::endl;
-    new_file << description.c_str() << std::endl;
+    new_file << description << std::endl;
     new_file.close();
 }

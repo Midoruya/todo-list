@@ -19,15 +19,16 @@ void console_table::draw_table_header()
     {
         for (int i = 0; i < this->header_list.size(); i++)
         {
-            int calculae_stacing = this->header_list[i].column_size / 2 - this->header_list[i].header.size() / 2;
+            std::string header_str = this->header_list[i].header;
+            int calculae_stacing = this->header_list[i].column_size / 2 - static_cast<int>(this->header_list[i].header.size()) / 2;
             char get_spacing_word = g != 1 ? '-' : ' ';
             if (i == 0)
                 std::printf("|");
             std::printf("%s", std::string(calculae_stacing, get_spacing_word).c_str());
             if (g == 1)
-                std::printf("%s", this->header_list[i].header.c_str());
+                std::printf("%s", header_str.c_str());
             else
-                std::printf("%s", std::string(this->header_list[i].header.size(), '-').c_str());
+                std::printf("%s", std::string(header_str.size(), '-').c_str());
             std::printf("%s", std::string(calculae_stacing, get_spacing_word).c_str());
             std::printf("|");
         }
@@ -41,13 +42,14 @@ void console_table::draw_table_columns()
     {
         for (int g = 0; g < this->column_list[i].size(); g++)
         {
-            int calculae_stacing = this->header_list[g].column_size / 2 - this->column_list[i][g].column_data.size() / 2;
+            std::string column_data_str = this->column_list[i][g].column_data;
+            int calculae_stacing = this->header_list[g].column_size / 2 - static_cast<int>(column_data_str.size()) / 2;
             if (g == 0)
                 std::printf("|");
 
             std::printf("%s", std::string(calculae_stacing, ' ').c_str());
-            std::printf("%s", this->column_list[i][g].column_data.c_str());
-            std::printf("%s", this->column_list[i][g].column_data.size() & 1 ? "" : " ");
+            std::printf("%s", column_data_str.c_str());
+            std::printf("%s", column_data_str.size() & 1 ? "" : " ");
             std::printf("%s", std::string(calculae_stacing, ' ').c_str());
             std::printf("|");
         }
@@ -55,12 +57,13 @@ void console_table::draw_table_columns()
     }
     for (int i = 0; i < this->header_list.size(); i++)
     {
-        int calculae_stacing = this->header_list[i].column_size / 2 - this->header_list[i].header.size() / 2;
+        std::string header_str = this->header_list[i].header;
+        int calculae_stacing = this->header_list[i].column_size / 2 - static_cast<int>(header_str.size()) / 2;
         if (i == 0)
             std::printf("|");
 
         std::printf("%s", std::string(calculae_stacing, '-').c_str());
-        std::printf("%s", std::string(this->header_list[i].header.size(), '-').c_str());
+        std::printf("%s", std::string(header_str.size(), '-').c_str());
         std::printf("%s", std::string(calculae_stacing, '-').c_str());
         std::printf("|");
     }
