@@ -48,11 +48,7 @@ int main()
         new_table_command.draw_all_table();
         command_handler handler_command = command_handler();
         handler_command.search_all_task();
-        std::printf("Please inter you command: \n");
         handler_command.handle_new_command();
-        auto test = [](std::string str)
-        { std::printf("%s\n", str.c_str()); };
-        std::for_each(handler_command.command_argument.begin(), handler_command.command_argument.end(), test);
 #ifdef _WIN32
         system("pause");
         system("cls");

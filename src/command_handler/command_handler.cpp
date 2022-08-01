@@ -9,8 +9,30 @@
 void command_handler::handle_new_command()
 {
     std::string input_comman = "";
+    std::printf("Please inter you command: \n");
     getline(std::cin, input_comman);
     this->command_argument = utilities::splite_string(input_comman);
+    this->add_task();
+}
+
+void command_handler::add_task()
+{
+    std::vector<std::string> command = this->command_argument;
+
+    if (command[0] != "add")
+        return;
+
+    if (command.size() != 4)
+    {
+        std::printf("You don't enter all the arguments of this command or you enter extra arguments\n");
+        return;
+    }
+
+    std::string name = command[1];
+    std::string description = command[2];
+    std::string tag = command[3];
+
+    this->create_new_task_file(name, tag, description);
 }
 
 void command_handler::search_all_task()
@@ -19,7 +41,7 @@ void command_handler::search_all_task()
     current_directory.append(current_directory.string() + "/" + this->save_in_folder);
     if (std::filesystem::exists(current_directory.string()) == false)
         std::filesystem::create_directory(current_directory.string());
-    this->create_new_task("test", "first", "asdasdasdasdadasdasd");
+    this->create_new_task_file("test", "first", "asdasdasdasdadasdasd");
     for (const auto &task : std::filesystem::directory_iterator(current_directory.string()))
     {
         std::string filename = task.path().stem().string();
@@ -36,7 +58,7 @@ void command_handler::search_all_task()
     }
 }
 
-void command_handler::create_new_task(std::string name, std::string tag, std::string description)
+void command_handler::create_new_task_file(std::string name, std::string tag, std::string description)
 {
     std::time_t get_data_time_now = std::time(NULL);
     std::tm *local_time = std::localtime(&get_data_time_now);

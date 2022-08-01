@@ -27,6 +27,8 @@ private:
     std::string save_in_folder = "task_list";
     std::vector<task_construct> task_list;
 
+    void add_task();
+
 public:
     std::vector<std::string> command_argument;
 
@@ -51,7 +53,7 @@ public:
      * @param tag  This is a task tag
      * @param description  This is a task description
      */
-    void create_new_task(std::string name, std::string tag, std::string description);
+    void create_new_task_file(std::string name, std::string tag, std::string description);
 
     command_handler(/* args */) {}
 };
