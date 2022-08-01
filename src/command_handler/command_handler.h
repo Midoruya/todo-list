@@ -27,6 +27,10 @@ private:
     std::string save_in_folder = "task_list";
     std::vector<task_construct> task_list;
 
+    /**
+     * @brief
+     *
+     */
     void add_task();
 
 public:
