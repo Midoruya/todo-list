@@ -4,15 +4,25 @@
 
 struct task_construct
 {
-    task_construct(std::string name, std::string description, std::string date, std::string tag, bool is_complete)
-    {
-        this->name = name;
-        this->description = description;
-        this->date = date;
-        this->tag = tag;
-        this->is_complete = is_complete;
-    }
+    /**
+     * @brief Construct a new task\
+     *
+     * @param name enter a task name
+     * @param description  enter a task description
+     * @param date enter a date
+     * @param tag enter a task tag
+     * @param is_complete
+     */
+    task_construct(std::string name, std::string description, std::string date, std::string tag, bool is_complete) : name(name), description(description), date(date), tag(tag), is_complete(is_complete) {}
 
+    /**
+     * @brief Get the full task filename
+     *
+     * @return std::string result full task filename
+     */
+    std::string get_file_name();
+
+    std::string file_format = ".task";
     bool is_complete;
     std::string name;
     std::string tag;
@@ -23,15 +33,20 @@ struct task_construct
 class command_handler
 {
 private:
-    std::string file_format = ".task";
     std::string save_in_folder = "task_list";
     std::vector<task_construct> task_list;
 
     /**
-     * @brief
+     * @brief use this function to create a new task
      *
      */
     void add_task();
+
+    /**
+     * @brief use this function to delete a task
+     *
+     */
+    void delete_task();
 
 public:
     std::vector<std::string> command_argument;
@@ -51,13 +66,18 @@ public:
     void search_all_task();
 
     /**
-     * @brief This function create a new task file and writes task description in to file content
+     * @brief use this function to create a new file task
      *
-     * @param name This is a task name
-     * @param tag  This is a task tag
-     * @param description  This is a task description
+     * @param task task construcor which the have all info
      */
-    void create_new_task_file(std::string name, std::string tag, std::string description);
+    void create_new_task_file(task_construct task);
+
+    /**
+     * @brief Get the work directory in which the lie all task file
+     *
+     * @return std::string return the work directory in which the lie all task file
+     */
+    std::string get_work_directory();
 
     command_handler(/* args */) {}
 };
